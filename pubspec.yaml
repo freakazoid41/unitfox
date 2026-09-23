@@ -16,7 +16,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.2+8
+version: 1.1.0+11
 
 environment:
   sdk: ^3.11.0
@@ -42,7 +42,11 @@ dependencies:
   path: ^1.9.1
   sqflite_common_ffi_web: ^1.1.1
   sqflite_common: ^2.5.8
-  file_picker: ^8.1.2
+  # Vendored: stock file_picker decodes images with BitmapFactory.decodeStream
+  # and no Options (no inSampleSize). Google Play pre-launch flags that as a
+  # memory risk. Patch lives in third_party/file_picker.
+  file_picker:
+    path: third_party/file_picker
   image_picker: ^1.1.2
   http: ^1.2.2
   intl: ^0.20.2

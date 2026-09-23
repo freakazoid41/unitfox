@@ -101,51 +101,54 @@ class _SplashScreenState extends State<SplashScreen>
           Positioned(
             left: 0,
             right: 0,
-            bottom: 80,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  FadeTransition(
-                    opacity: _fadeText,
-                    child: Text(
-                      ls(context).t('splash.welcome'),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.white,
-                        letterSpacing: -0.5,
+            bottom: 0,
+            child: SafeArea(
+              top: false,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 48, left: 24, right: 24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    FadeTransition(
+                      opacity: _fadeText,
+                      child: Text(
+                        ls(context).t('splash.welcome'),
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.w800,
+                          color: Colors.white,
+                          letterSpacing: -0.5,
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  FadeTransition(
-                    opacity: _fadeText,
-                    child: Text(
-                      ls(context).t('splash.subtitle'),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white.withValues(alpha: 0.6),
+                    const SizedBox(height: 8),
+                    FadeTransition(
+                      opacity: _fadeText,
+                      child: Text(
+                        ls(context).t('splash.subtitle'),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white.withValues(alpha: 0.6),
+                        ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 32),
-                  FadeTransition(
-                    opacity: _fadeLoader,
-                    child: SizedBox(
-                      width: 28,
-                      height: 28,
-                      child: CircularProgressIndicator(
-                        color: AppBrand.gradient[0],
-                        strokeWidth: 2.5,
+                    const SizedBox(height: 32),
+                    FadeTransition(
+                      opacity: _fadeLoader,
+                      child: SizedBox(
+                        width: 28,
+                        height: 28,
+                        child: CircularProgressIndicator(
+                          color: AppBrand.gradient[0],
+                          strokeWidth: 2.5,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

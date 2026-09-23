@@ -3,7 +3,9 @@ import java.util.Properties
 
 plugins {
     id("com.android.application")
-    id("kotlin-android")
+    // Classic Kotlin (android.builtInKotlin=false) — required by app MainActivity
+    // and by plugins that still apply kotlin-android.
+    id("org.jetbrains.kotlin.android")
     id("dev.flutter.flutter-gradle-plugin")
 }
 
@@ -47,6 +49,13 @@ android {
 
     buildTypes {
         release {
+            // Google Play R8 advice: shrink code + strip unused resources.
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro",
+            )
             signingConfig = if (keystoreProperties.containsKey("storeFile"))
                 signingConfigs.getByName("release")
             else
@@ -57,4 +66,9 @@ android {
 
 flutter {
     source = "../.."
+}
+
+dependencies {
+    // Edge-to-edge (Google Play SDK 35): WindowCompat.setDecorFitsSystemWindows.
+    implementation("androidx.core:core-ktx:1.15.0")
 }

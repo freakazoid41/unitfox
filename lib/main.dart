@@ -1,6 +1,7 @@
 import 'dart:async' show unawaited;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +30,17 @@ import 'widgets/bottom_menu_bar.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Edge-to-edge (Android 15 / targetSdk 35): dark status-bar icons on the
+  // light warm canvas so they stay legible over the transparent bar.
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.light,
+      systemNavigationBarColor: Colors.transparent,
+      systemNavigationBarIconBrightness: Brightness.dark,
+    ),
+  );
   await LocalDB.open();
   runApp(const SiteManagerApp());
 }

@@ -37,6 +37,9 @@ class _AttachmentPickerState extends State<AttachmentPicker> {
       type: FileType.custom,
       allowedExtensions: ['jpg', 'jpeg', 'png', 'webp', 'pdf'],
       withData: true,
+      // FileType.custom never hits file_picker's image compress path, but be
+      // explicit so a future type change can't reintroduce full-res decodes.
+      allowCompression: false,
     );
     if (result == null || result.files.isEmpty) return;
     final file = result.files.first;
