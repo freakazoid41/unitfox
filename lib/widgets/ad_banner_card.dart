@@ -13,19 +13,64 @@ class AdBannerCard extends StatefulWidget {
   State<AdBannerCard> createState() => _AdBannerCardState();
 }
 
-class _AdBannerCardState extends State<AdBannerCard> {
+class _AdBannerCardState extends State<AdBannerCard> with WidgetsBindingObserver {
   BannerAd? _bannerAd;
   bool _adLoaded = false;
   bool _adFailed = false;
+  Timer? _retryTimer;
+  Timer? _refreshTimer;
+  int _retryCount = 0;
+
+  static const _maxRetries = 5;
 
   @override
   void initState() {
     super.initState();
-    _loadAd();
+    WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addPostFrameCallback((_) => _loadAd());
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && !_adLoaded && mounted) {
+      debugPrint('AdMob banner: app resumed, retrying');
+      _scheduleRetry();
+    }
+  }
+
+  void _scheduleRetry() {
+    if (_retryCount >= _maxRetries) return;
+    _retryTimer?.cancel();
+    // Exponential backoff: 5, 10, 20, 30, 30s
+    final delay = Duration(seconds: [5, 10, 20, 30, 30][_retryCount.clamp(0, 4)]);
+    _retryTimer = Timer(delay, () {
+      if (!mounted) return;
+      _retryCount++;
+      setState(() => _adFailed = false);
+      _loadAd();
+    });
+    debugPrint('AdMob banner retry #$_retryCount in ${delay.inSeconds}s');
+  }
+
+  void _scheduleRefresh() {
+    _refreshTimer?.cancel();
+    // AdMob recommends 30–60s refresh; we refresh the BannerAd instance
+    _refreshTimer = Timer(const Duration(seconds: 60), () {
+      if (!mounted) return;
+      debugPrint('AdMob banner refresh');
+      _bannerAd?.dispose();
+      _bannerAd = null;
+      _adLoaded = false;
+      _loadAd();
+    });
   }
 
   void _loadAd() {
     if (!AdsConfig.enabled) return;
+
+    // Dispose any stale instance before creating a new load.
+    _bannerAd?.dispose();
+    _bannerAd = null;
 
     final adUnitId = AdsConfig.bannerAdUnitId;
     _bannerAd = BannerAd(
@@ -36,7 +81,13 @@ class _AdBannerCardState extends State<AdBannerCard> {
         onAdLoaded: (ad) {
           debugPrint('AdMob banner loaded: $adUnitId');
           if (!mounted) return;
-          setState(() => _adLoaded = true);
+          _retryTimer?.cancel();
+          setState(() {
+            _adLoaded = true;
+            _adFailed = false;
+          });
+          _retryCount = 0;
+          _scheduleRefresh();
         },
         onAdFailedToLoad: (ad, error) {
           debugPrint('AdMob banner failed: ${error.message} (code=${error.code})');
@@ -46,6 +97,7 @@ class _AdBannerCardState extends State<AdBannerCard> {
             _bannerAd = null;
             _adFailed = true;
           });
+          _scheduleRetry();
         },
       ),
     );
@@ -55,6 +107,9 @@ class _AdBannerCardState extends State<AdBannerCard> {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _retryTimer?.cancel();
+    _refreshTimer?.cancel();
     _bannerAd?.dispose();
     super.dispose();
   }

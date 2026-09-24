@@ -334,8 +334,17 @@ void main() {
       expect(income.label, 'A-101 · Aidat');
       expect(income.amount, 90000);
       expect(expense.amount, 5000);
-      expect(income.date.isBefore(expense.date), isFalse,
-          reason: 'newest first');
+      // Log itself is newest-first (non-increasing dates). DB round-trips
+      // truncate to milliseconds, so ties are legal — assert the invariant,
+      // not a strict order.
+      for (var i = 0; i + 1 < txns.length; i++) {
+        expect(
+          txns[i].date.isAfter(txns[i + 1].date) ||
+              txns[i].date.isAtSameMomentAs(txns[i + 1].date),
+          isTrue,
+          reason: 'txns sorted newest first',
+        );
+      }
 
       final (spent, guessedExpense) =
           monthlyExpensesGuessed(h.expenses, 'EUR', h.fx);

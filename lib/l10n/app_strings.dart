@@ -173,7 +173,7 @@ class AppStrings {
     'onb.cashOpening': 'Cash opening balance', 'onb.title.accounts': 'Accounts',
     'onb.intro.accounts': 'Cash is created as your main account. Add bank '
         'accounts with their details.',
-    'onb.cashMain': 'Cash (main)', 'onb.openingLine': '{0} · opening {1}',
+    'onb.cashMain': 'Cash (main)',
     'onb.addBank': 'Add bank account', 'onb.title.units': 'Units',
     'onb.intro.units': 'Add the units in your building. Rent is charged in '
         'the main currency.',
@@ -339,7 +339,7 @@ class AppStrings {
     'onb.cashOpening': 'Nakit başlangıç bakiyesi', 'onb.title.accounts': 'Hesaplar',
     'onb.intro.accounts': 'Nakit, ana hesabınız olarak oluşturulur. Detaylarıyla '
         'banka hesapları ekleyin.',
-    'onb.cashMain': 'Nakit (ana)', 'onb.openingLine': '{0} · başlangıç {1}',
+    'onb.cashMain': 'Nakit (ana)',
     'onb.addBank': 'Banka hesabı ekle', 'onb.title.units': 'Daireler',
     'onb.intro.units': 'Binanızdaki daireleri ekleyin. Kira ana para biriminde '
         'tahakkuk eder.',
@@ -501,7 +501,7 @@ class AppStrings {
     'onb.cashOpening': 'Начальный остаток наличных', 'onb.title.accounts': 'Счета',
     'onb.intro.accounts': 'Наличные создаются как основной счёт. Добавьте '
         'банковские счета с их реквизитами.',
-    'onb.cashMain': 'Наличные (основной)', 'onb.openingLine': '{0} · остаток {1}',
+    'onb.cashMain': 'Наличные (основной)',
     'onb.addBank': 'Добавить банковский счёт', 'onb.title.units': 'Квартиры',
     'onb.intro.units': 'Добавьте квартиры в вашем доме. Аренда начисляется в '
         'основной валюте.',
@@ -666,7 +666,7 @@ class AppStrings {
     'onb.cashOpening': 'Solde d\'ouverture espèces', 'onb.title.accounts': 'Comptes',
     'onb.intro.accounts': 'Les espèces sont créées comme compte principal. Ajoutez '
         'des comptes bancaires avec leurs détails.',
-    'onb.cashMain': 'Espèces (principal)', 'onb.openingLine': '{0} · ouverture {1}',
+    'onb.cashMain': 'Espèces (principal)',
     'onb.addBank': 'Ajouter un compte bancaire', 'onb.title.units': 'Logements',
     'onb.intro.units': 'Ajoutez les logements de votre immeuble. Le loyer est '
         'chargé dans la monnaie principale.',
@@ -830,7 +830,7 @@ class AppStrings {
     'onb.cashOpening': 'Bareröffnungssaldo', 'onb.title.accounts': 'Konten',
     'onb.intro.accounts': 'Bargeld wird als Hauptkonto erstellt. Fügen Sie '
         'Bankkonten mit ihren Details hinzu.',
-    'onb.cashMain': 'Bargeld (Haupt)', 'onb.openingLine': '{0} · Eröffnung {1}',
+    'onb.cashMain': 'Bargeld (Haupt)',
     'onb.addBank': 'Bankkonto hinzufügen', 'onb.title.units': 'Einheiten',
     'onb.intro.units': 'Fügen Sie die Einheiten Ihres Gebäudes hinzu. Miete wird '
         'in der Hauptwährung gebucht.',
@@ -993,7 +993,7 @@ class AppStrings {
     'onb.cashOpening': 'नकद शुरुआती बैलेंस', 'onb.title.accounts': 'खाते',
     'onb.intro.accounts': 'नकद आपके मुख्य खाते के रूप में बनाया जाता है। '
         'विवरण के साथ बैंक खाते जोड़ें।',
-    'onb.cashMain': 'नकद (मुख्य)', 'onb.openingLine': '{0} · शुरुआत {1}',
+    'onb.cashMain': 'नकद (मुख्य)',
     'onb.addBank': 'बैंक खाता जोड़ें', 'onb.title.units': 'यूनिट',
     'onb.intro.units': 'अपनी इमारत की यूनिट जोड़ें। किराया मुख्य मुद्रा में '
         'लिया जाता है।',

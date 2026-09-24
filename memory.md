@@ -161,7 +161,8 @@ lib/
 - **Custom icons:** dashboard, units, workorders, finance, accounts, crew — all custom PNGs in menu grid.
 - **Awaiting incomes:** auto-bills current month on app load + addUnit + recordPayment. No manual post step needed.
 - **Rent grid screen:** per-unit 12-month grid (current + 11 forward) with paid/partial/unpaid month cells, month detail sheet, foreign-currency credits surfaced on the Awaiting cards.
-- **AdMob banner:** `google_mobile_ads ^9.1.0` + `AdBannerCard` widget in the dashboard, placed between "Bu Ay" section header and the first stat card. Real production IDs live in `lib/ads/ads_config.dart` with `isProduction = true`. iOS `ca-app-pub-1088997129209291~8191655637` / banner `ca-app-pub-1088997129209291/4361734608`, Android `ca-app-pub-1088997129209291~5559266208` / banner `ca-app-pub-1088997129209291/6579191064`. Config also in Info.plist (`GADApplicationIdentifier`) + AndroidManifest (`APPLICATION_ID`). `MobileAds.instance.initialize()` is NOT called in main() — SDK v9+ auto-initializes on first ad request. Widget shows real `BannerAd` + `AdWidget` when loaded, styled placeholder (AD badge + "Sponsored" text) as fallback when ad fails. No crashes, no freezes. **Test verified:** Google test banner (`ca-app-pub-3940256099942544/6300978111`) loads and renders correctly on iOS. **Status:** AdMob console shows "İnceleme gerekli" (Review required) for UnitFox iOS — production ads won't serve until Google approves.
+- **AdMob banner:** `google_mobile_ads ^9.1.0` + `AdBannerCard` widget in the dashboard, placed between "Bu Ay" section header and the first stat card. Real production IDs live in `lib/ads/ads_config.dart` with `isProduction = true`. iOS `ca-app-pub-1088997129209291~8191655637` / banner `ca-app-pub-1088997129209291/4361734608`, Android `ca-app-pub-1088997129209291~5559266208` / banner `ca-app-pub-1088997129209291/6579191064`. Config also in Info.plist (`GADApplicationIdentifier`) + AndroidManifest (`APPLICATION_ID`). `MobileAds.instance.initialize()` is NOT called in main() — SDK v9+ auto-initializes on first ad request. Widget shows real `BannerAd` + `AdWidget` when loaded, styled placeholder (AD badge + "Sponsored" text) as fallback when ad fails. No crashes, no freezes. **Test verified:** Google test banner (`ca-app-pub-3940256099942544/6300978111`) loads and renders correctly on iOS. **Status:** AdMob console shows "İnceleme gerekli" (Review required) for UnitFox iOS — production ads won't serve until Google approves. **Note Sep 2026:** ad load rate noticeably up on device testing — placement + refresh may matter more now. Next: guarantee visibility (post-frame load retry, anchored placement, no lazy-load, refresh 30–60s).
+- **TODO ads (Sep 2026):** make the banner **reliably seen** — verify dashboard load isn't racing the AdWidget, confirm the banner is above the fold on small screens, add a timed retry on `onAdFailedToLoad`, consider anchored bottom placement or sticky header so scroll never hides it, and tune refresh via AdMob console. Goal: every session sees an impression even on slow/ad-blocked networks.
 
 ### QA fixes (latest session)
 - **Nav bar:** CurvedNavigationBar now lives in a `Stack` overlay inside Scaffold body (not `bottomNavigationBar`). Positioned at bottom with `Positioned(left: 0, right: 0, bottom: 0)`. Transparent background, dashboard scroll pads 76px below to clear it.
@@ -299,7 +300,7 @@ lib/
 ## Release checklist (Play Store)
 - **App name:** Unitfox
 - **Package:** `com.unit.fox`
-- **Version:** `1.0.1+5` (versionCode 5) — bump `+N` on each release
+- **Version:** `1.1.0+12` (versionCode 12) — bump `+N` on each release
 - **Privacy policy:** `https://freakazoid41.github.io/unitfox/privacy.html`
 - **Play Console:** `https://play.google.com/console` (PickleCan, personal)
 - **Signed AAB:** `build/app/outputs/bundle/release/app-release.aab` (62.3MB)
@@ -317,6 +318,12 @@ lib/
 - **Opt-in link:** from Play Console → Closed testing → Test kullanıcıları → Bağlantıyı kopyala
 - **Reddit post drafted** for `r/AndroidTesting`, `r/AndroidApps`, `r/alphaandbetausers` — title: `[Android] Unitfox — Offline apartment/site manager. Looking for closed testers (12+ needed!)`
 - **Version history:** v1 (internal testing, versionCode 1), v2 (AD_ID fix, versionCode 2 — failed upload), v3 (current, versionCode 3 — has AD_ID permission)
+
+## TODO (Sep 2026)
+- [x] **Banner reliably seen** — DONE: `AdBannerCard` post-frame load + resume retry + 5/10/20/30s backoff (5x) + 60s refresh; placement hero→banner→Overview above fold; `IndexedStack` keeps state. Emulator verified live `Test Ad` render.
+- [x] **Full app test** — DONE: 27 tests green (`flutter test`), analyzer 1 pre-existing info, R8-minified release smoke on PixelPlay (launch, onboarding→DB, Units, menu grid, Dashboard, no crash).
+- [x] **Onboarding cash row design (Sep 2026)** — DONE: cash card shared the bank rows' two-line `ListTile` (removed forced `isThreeLine`, same `field.opening` subtitle shape, leading icon on both, empty bank/iban collapsed). Dead `onb.openingLine` key removed from all 6 langs. Regression test `test/onboarding_cash_row_test.dart`.
+- [x] **Flaky "newest first" test (Sep 2026)** — DONE: `financial_smoke_test` asserted inverted strict order; DB ms-truncation makes ties legal. Now asserts the non-increasing-date invariant (loop). Full suite 27 — all pass, 3x stable.
 
 Same here t4t i did install your app and i will enter for 14 day. here are my links . im awaiting your valueable support
 google group : https://groups.google.com/g/pickletest

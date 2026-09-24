@@ -301,22 +301,29 @@ Future<void> _confirmRemoveAccount(Account a) async {
           child: ListTile(
             leading: const Icon(Icons.payments),
             title: Text(s.t('onb.cashMain')),
-            subtitle: Text(s.t('onb.openingLine', [_mainCurrency, money(opening, currency: _mainCurrency)])),
-            isThreeLine: true,
+            subtitle: Text(
+                '$_mainCurrency · ${s.t('field.opening')} ${money(opening, currency: _mainCurrency)}'),
           ),
         ),
         const SizedBox(height: 8),
-        ..._bankAccounts.map((a) => Card(
-              child: ListTile(
-                title: Text(a.name),
-                subtitle: Text(
-                    '${a.currency} · ${a.bankName} ${a.iban} · ${s.t('field.opening')} ${money(a.openingBalance, currency: a.currency)}'.trim()),
-                trailing: IconButton(
-                  icon: const Icon(Icons.delete_outline),
-                  onPressed: () => _confirmRemoveAccount(a),
-                ),
+        ..._bankAccounts.map((a) {
+          final middle =
+              '${a.bankName} ${a.iban}'.trim().replaceAll(RegExp(r'\s+'), ' ');
+          final subtitle = middle.isEmpty
+              ? '${a.currency} · ${s.t('field.opening')} ${money(a.openingBalance, currency: a.currency)}'
+              : '${a.currency} · $middle · ${s.t('field.opening')} ${money(a.openingBalance, currency: a.currency)}';
+          return Card(
+            child: ListTile(
+              leading: const Icon(Icons.account_balance),
+              title: Text(a.name),
+              subtitle: Text(subtitle),
+              trailing: IconButton(
+                icon: const Icon(Icons.delete_outline),
+                onPressed: () => _confirmRemoveAccount(a),
               ),
-            )),
+            ),
+          );
+        }),
         const SizedBox(height: 8),
         OutlinedButton.icon(
           onPressed: _addBankAccount,
